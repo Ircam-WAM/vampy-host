@@ -19,12 +19,18 @@ def read(*paths):
     with open(os.path.join(*paths), 'r') as f:
         return f.read()
 
+class get_numpy_include(object):
+    """Defer numpy.get_include() until after numpy is installed."""
+
+    def __str__(self):
+        import numpy
+        return numpy.get_include()
+
 def get_extension():
-    import numpy as np
     vampyhost = Extension('vampyhost',
                       sources = srcfiles,
                       define_macros = [ ('_USE_MATH_DEFINES', 1) ],
-                      include_dirs = [ 'vamp-plugin-sdk', np.get_include() ])
+                      include_dirs = [ 'vamp-plugin-sdk', get_numpy_include() ])
     return vampyhost
 
 setup (name = 'vamp',
@@ -36,7 +42,7 @@ setup (name = 'vamp',
        packages = find_packages(exclude = [ '*test*' ]),
        ext_modules = [ get_extension() ],
        requires = [ 'numpy' ],
-       setup_requires = [ 'numpy' ],
+       install_requires = [ 'numpy' ],
        author = 'Chris Cannam, George Fazekas',
        author_email = 'cannam@all-day-breakfast.com',
        classifiers = [
