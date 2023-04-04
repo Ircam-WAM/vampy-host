@@ -34,6 +34,7 @@ setup (name = 'vamp',
        packages = find_packages(exclude = [ '*test*' ]),
        ext_modules = [ vampyhost ],
        requires = [ 'numpy' ],
+       setup_requires = [ 'numpy' ],
        author = 'Chris Cannam, George Fazekas',
        author_email = 'cannam@all-day-breakfast.com',
        classifiers = [
