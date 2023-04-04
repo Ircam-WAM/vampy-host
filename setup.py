@@ -1,6 +1,5 @@
 import os
 from setuptools import setup, find_packages, Extension
-import numpy as np
 
 sdkdir = 'vamp-plugin-sdk/src/vamp-hostsdk/'
 vpydir = 'native/'
@@ -19,11 +18,14 @@ srcfiles = [
 def read(*paths):
     with open(os.path.join(*paths), 'r') as f:
         return f.read()
-    
-vampyhost = Extension('vampyhost',
+
+def get_extension():
+    import numpy as np
+    vampyhost = Extension('vampyhost',
                       sources = srcfiles,
                       define_macros = [ ('_USE_MATH_DEFINES', 1) ],
                       include_dirs = [ 'vamp-plugin-sdk', np.get_include() ])
+    return vampyhost
 
 setup (name = 'vamp',
        version = '1.1.0',
@@ -32,7 +34,7 @@ setup (name = 'vamp',
        long_description = ( read('README.rst') + '\n\n' + read('COPYING.rst') ),
        license = 'MIT',
        packages = find_packages(exclude = [ '*test*' ]),
-       ext_modules = [ vampyhost ],
+       ext_modules = [ get_extension() ],
        requires = [ 'numpy' ],
        setup_requires = [ 'numpy' ],
        author = 'Chris Cannam, George Fazekas',
