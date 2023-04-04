@@ -42,7 +42,8 @@ setup (name = 'vamp',
        packages = find_packages(exclude = [ '*test*' ]),
        ext_modules = [get_extension() ],
        requires = [ 'numpy' ],
-       install_requires = [ 'numpy' ],
+       setup_requires=["numpy"],  # Just numpy here
+       install_requires=["numpy"],  # Add any of your other dependencies here
        author = 'Chris Cannam, George Fazekas',
        author_email = 'cannam@all-day-breakfast.com',
        classifiers = [
